@@ -1,0 +1,56 @@
+<div id="elementSimulator" style="border:1px solid #ccc; padding:20px; border-radius:10px;">
+  <h2>Element Simulator</h2>
+  <div id="elementStatus">Performance: 100%</div>
+
+  <label>Tariffs: <span id="elementTariffsValue">0</span>%</label>
+  <input type="range" id="elementTariffs" min="0" max="100" value="0"><br>
+
+  <label>Layoffs: <span id="elementLayoffsValue">0</span>%</label>
+  <input type="range" id="elementLayoffs" min="0" max="100" value="0"><br>
+
+  <label>Contracts Lost: <span id="elementContractsValue">0</span>%</label>
+  <input type="range" id="elementContracts" min="0" max="100" value="0"><br>
+
+  <label>Debt Levels: <span id="elementDebtValue">0</span>%</label>
+  <input type="range" id="elementDebt" min="0" max="100" value="0"><br>
+
+  <label>Public Perception: <span id="elementPerceptionValue">50</span>%</label>
+  <input type="range" id="elementPerception" min="0" max="100" value="50"><br>
+</div>
+
+<script>
+(function() {
+  function calculatePerformance() {
+    const tariffs = parseInt(document.getElementById('elementTariffs').value);
+    const layoffs = parseInt(document.getElementById('elementLayoffs').value);
+    const contracts = parseInt(document.getElementById('elementContracts').value);
+    const debt = parseInt(document.getElementById('elementDebt').value);
+    const perception = parseInt(document.getElementById('elementPerception').value);
+
+    let performance = 100;
+    performance -= tariffs * 0.2;
+    performance -= layoffs * 0.1;
+    performance -= contracts * 0.5;
+    performance -= debt * 0.2;
+    performance += (perception - 50) * 0.5;
+
+    return Math.min(100, Math.max(0, Math.round(performance)));
+  }
+
+  function updateUI() {
+    document.getElementById('elementTariffsValue').textContent = document.getElementById('elementTariffs').value;
+    document.getElementById('elementLayoffsValue').textContent = document.getElementById('elementLayoffs').value;
+    document.getElementById('elementContractsValue').textContent = document.getElementById('elementContracts').value;
+    document.getElementById('elementDebtValue').textContent = document.getElementById('elementDebt').value;
+    document.getElementById('elementPerceptionValue').textContent = document.getElementById('elementPerception').value;
+
+    document.getElementById('elementStatus').textContent = 'Performance: ' + calculatePerformance() + '%';
+  }
+
+  document.querySelectorAll('#elementSimulator input[type=range]').forEach(slider => {
+    slider.addEventListener('input', updateUI);
+  });
+
+  updateUI();
+})();
+</script>
