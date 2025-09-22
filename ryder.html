@@ -1,0 +1,56 @@
+<div id="ryderSimulator" style="border:1px solid #ccc; padding:20px; border-radius:10px;">
+  <h2>Ryder Simulator</h2>
+  <div id="ryderStatus">Performance: 100%</div>
+
+  <label>Tariffs: <span id="ryderTariffsValue">0</span>%</label>
+  <input type="range" id="ryderTariffs" min="0" max="100" value="0"><br>
+
+  <label>Layoffs: <span id="ryderLayoffsValue">0</span>%</label>
+  <input type="range" id="ryderLayoffs" min="0" max="100" value="0"><br>
+
+  <label>Contracts Lost: <span id="ryderContractsValue">0</span>%</label>
+  <input type="range" id="ryderContracts" min="0" max="100" value="0"><br>
+
+  <label>Debt Levels: <span id="ryderDebtValue">0</span>%</label>
+  <input type="range" id="ryderDebt" min="0" max="100" value="0"><br>
+
+  <label>Public Perception: <span id="ryderPerceptionValue">50</span>%</label>
+  <input type="range" id="ryderPerception" min="0" max="100" value="50"><br>
+</div>
+
+<script>
+(function() {
+  function calculatePerformance() {
+    const tariffs = parseInt(document.getElementById('ryderTariffs').value);
+    const layoffs = parseInt(document.getElementById('ryderLayoffs').value);
+    const contracts = parseInt(document.getElementById('ryderContracts').value);
+    const debt = parseInt(document.getElementById('ryderDebt').value);
+    const perception = parseInt(document.getElementById('ryderPerception').value);
+
+    let performance = 100;
+    performance -= tariffs * 0.8;
+    performance -= layoffs * 0.5;
+    performance -= contracts * 1.0;
+    performance -= debt * 0.3;
+    performance += (perception - 50) * 0.5;
+
+    return Math.min(100, Math.max(0, Math.round(performance)));
+  }
+
+  function updateUI() {
+    document.getElementById('ryderTariffsValue').textContent = document.getElementById('ryderTariffs').value;
+    document.getElementById('ryderLayoffsValue').textContent = document.getElementById('ryderLayoffs').value;
+    document.getElementById('ryderContractsValue').textContent = document.getElementById('ryderContracts').value;
+    document.getElementById('ryderDebtValue').textContent = document.getElementById('ryderDebt').value;
+    document.getElementById('ryderPerceptionValue').textContent = document.getElementById('ryderPerception').value;
+
+    document.getElementById('ryderStatus').textContent = 'Performance: ' + calculatePerformance() + '%';
+  }
+
+  document.querySelectorAll('#ryderSimulator input[type=range]').forEach(slider => {
+    slider.addEventListener('input', updateUI);
+  });
+
+  updateUI();
+})();
+</script>
